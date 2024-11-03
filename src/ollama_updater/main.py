@@ -31,9 +31,6 @@ class LogLevel(str, Enum):
     ERROR = "ERROR"
 
 
-DEFAULT_LOG_LEVEL = LogLevel.INFO
-
-
 def setup_logging(log_level: str) -> None:
     """Configure logging with rich handler."""
     logging.basicConfig(
@@ -127,11 +124,10 @@ async def update_all_models(models: List[str]) -> None:
 
 @app.command()
 def main(
-    log_level: LogLevel = DEFAULT_LOG_LEVEL,
+    log_level: LogLevel = typer.Option(
+        LogLevel.INFO, "--log-level", "-l", help="Set the logging level"
+    ),
 ) -> None:
-    log_level = typer.Option(
-        log_level, "--log-level", "-l", help="Set the logging level"
-    )
     """update all installed Ollama models."""
     setup_logging(log_level.value)
 
